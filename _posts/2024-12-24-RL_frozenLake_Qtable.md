@@ -89,6 +89,8 @@ for i in range(num_episodes):
 
 최종적으로 전체 코드는 아래와 같다.
 ```python
+import gym
+from gym.envs.registration import  register
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -240,6 +242,8 @@ $$
 ## 6. Q-table 실습(최적화)
 최종적인 전체 코드는 아래와 같다.
 ```python
+import gym
+from gym.envs.registration import  register
 import numpy as np
 import matplotlib.pyplot as plt
 

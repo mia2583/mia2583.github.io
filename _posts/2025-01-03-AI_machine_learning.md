@@ -1,8 +1,8 @@
 ---
-title: "[AI] Machine Learning"
+title: "[AI] Machine Learning1"
 date: 2025-01-03 23:00:00 +09:00
 categories: 인공지능
-description: 
+description: 기계 학습의 정의와 그 종류에 대해서 알아본다.
 pin: true
 use_math: true
 ---
@@ -68,7 +68,7 @@ use_math: true
 일부의 데이터는 지도 학습으로, 또 일부의 데이터는 비지도 학습으로 섞어서 모델을 학습시키는 방법을 semi-supervised learning이라 한다. 
 이 학습법은 라벨링에 많은 시간이 소요되는 지도 학습을 개선한 학습 방법으로, 특정 클래스에 대한 데이터만을 지도 학습으로 주는 PU learning(Positive and Unlabeled) 방식과 모든 클래스에 대해 일부 지도 학습 데이터를 포함하는 LU learning(small set of Labeled and large set of Unlabeled) 방식이 있다.
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/learning_type.JPG" alt="학습의 종류" style="width: 50%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/learning_type.JPG" alt="학습의 종류" style="width: 100%">
 
 Semi-supervised Learning 방법은 라벨링된 데이터를 바탕으로 예측된 decision boundary에 비지도 학습 데이터로 정확성을 추가한다. 그 결과, 더 높은 성능의 classification이 가능하다.
 
@@ -76,28 +76,6 @@ Semi-supervised Learning 방법은 라벨링된 데이터를 바탕으로 예측
 
 강화학습은 데이터 대신에 환경이 주어진다. Agent가 환경과 상호작용하면서 action에 따른 평가(reward, 보상)를 바탕으로 학습하게 된다. 하지만 여러 action에 대한 평가(reward)를 나중에 한번에 받게 되므로, 앞서 순차적으로 했던 수많은 action에 대해 일일히 평가를 분배하는 것이 쉽지 않다. 
 따라서 강화학습은 다른 학습 방법보다 학습 시간이 더 길고 학습 난이도가 더 높은 편이다.
-
-
-## 4. 
-기계 학습의 목표인 일반화는 오차를 구성하는 편향(bias), 분산(variance)과 밀접하게 연관되어 있다. 최적화된 모델을 선택하기 위해서는 이 둘의 trade-off 관계를 이해할 필요가 있다. 그리고 학습 정도에 따른 underfitting과 overfitting에 대해서도 설명한다.
-
-기계 학습을 진행하기 위해서는 사용할 모델 클래스(hyper class, ex. 선형 모델)와 파라미터(parameter)를 먼저 정의해야 한다. 모델은 학습 데이터 s에 대해 잘 작동하는 파라미터 W, b를 찾게 되는데, 이를 parameter estimation이라 한다.
-
-해당 모델이 잘 동작되는지 평가하기 위해서 손실 함수(Loss function)를 사용하는데, 손실 함수는 실제와 예측값이 차이가 날 수록 큰 값을 반환하도록 정의된다.
-
-결국 모델의 학습은 손실 함수를 최소화하는 문제로 변형될 수 있다.
-
-> 지도 학습에서의 손실함수  
-> - 분류(Classification) : 0/1 loss function  
-> - 회귀(regression) : squared loss function
-
-### 4-1. 과적합
-
-
-### 4-1. 편향과 분산
-
-
-
 
 ## 참고
 본 포스팅은 LG Aimers 강좌 중 서울대학교 김건희 교수님의 'Machine Learning 개론'에서 학습한 내용을 정리한다.

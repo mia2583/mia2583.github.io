@@ -1,8 +1,8 @@
 ---
-title: "[Linux] 우분투 유용 기능 설정"
+title: "[Linux] 우분투 유용 기능 설정 - 한글, 디스크 공유"
 date: 2025-01-07 11:30:00 +09:00
 categories: 리눅스
-description: 한글 입력, 듀얼 부팅내의 디스크 공유 방법에 대해 작성한다.
+description: 한글 입력, 듀얼 부팅 내의 디스크 공유 방법에 대해 작성한다.
 pin: true
 use_math: true
 ---
@@ -45,7 +45,7 @@ use_math: true
 
 이제 한글이 입력된다!!!!!
 
-## 2. 듀얼부팅 간의 디스크 공유하기(미해결)
+## 2. 듀얼부팅 간의 디스크 공유하기
 
 현재 C 드라이브에 윈도우와 리눅스가 같이 설치가 되어 있다. D 드라이브의 파일을 윈도우와 리눅스에서 모두 접근 가능하도록 하려고 한다. 
 
@@ -68,14 +68,22 @@ use_math: true
 - Mount Point 바로위에 옵션에 rw를 추가 입력해준다.
 - Mount Point 에서 디스크를 마운트 할 경로를 지정해준다.
 
-재부팅 시에 D 드라이브에서 데이터를 삭제하거나 저장하려고 하면 권한의 이유로 실패한다. 나의 경우에는 디스크가 NTFS 파일 시스템이라 리눅스 환경에서 `chmod` 또는 `chown` 명령어로 권한 수정이 불가능하다..([참고](https://ubuntuforums.org/showthread.php?t=2480444))
+재부팅 시에 D 드라이브에서 데이터를 삭제하거나 저장하려고 하면 권한의 이유로 실패한다. 디스크가 NTFS 파일 시스템이면 리눅스 환경에서 `chmod` 또는 `chown` 명령어로 권한 수정이 불가능하다..([참고](https://ubuntuforums.org/showthread.php?t=2480444))
 
-따라서 윈도우에서 폴더 생성 시 권한을 미리 열어놔야 한다. 디스크 자체의 권한을 수정할 수도 있지만 나는 그냥 특정 몇 폴더에 대해서만 권한을 열려고 한다.
+하지만 마운트 옵션을 rw로 한 것을 기억할 것이다. 그럼에도 불구하고 윈도우에서 잘 사용하던 디스크가 우분투에서 read로만 인식되는 이유는 Window에서 lock이 걸린 상태로 듀얼 부팅을 시도했기 때문이다. 
 
-- [폴더에서 오른쪽 마우스]-[일반]-[읽기 전용 체크 해제]
-- [폴더에서 오른쪽 마우스]-[보안]-[편집]-[Users 선택]-[모든 권한 허용]
+Window는 기본적으로 빠른 시작을 사용해서 컴퓨터를 부팅한다. 따라서 lock을 풀기 위해서는 Window를 완전히 종료시켜야 한다.
 
-와하하 아직 해결중....
+> 빠른 시작(Fast Startup)?  
+> 기존의 부팅과 절전 모드의 장점을 결합한 기능으로, 운영체제의 핵심 부분인 커널과 드라이브 상태를 메모리에 저장하지 않고 SSD나 하드디스크에 저장한다. 이로써 더 빠른 부팅이 가능하다.
+
+<img src="{{ site.baseurl }}/assets/img/post/Linux/fast_startup.JPG" alt="빠른 시작 켜기" style="width: 80%">
+
+이제 빠른 시작을 비활성화하자. 
+
+[제어판]-[하드웨어 및 소리]-[전원옵션:전원 단추 동작 변경]-[현재 사용할 수 없는 설정 변경]에서 [빠른 시작 켜기]를 체크 해제한다.
+
+이제 윈도우를 종료하고 우분투를 부팅하면 정상적으로 파일 read, write가 가능하다. 
 
 ## 참고
 
@@ -83,5 +91,8 @@ use_math: true
 
 케라비님의 [ubuntu 20.04와 윈도우 파일 공유하기](https://keravi.tistory.com/18)
 
+Anton Silvers님의 [How to fix Linux NTFS read only access issue when dual-booting with Windows 10](https://www.microfusion.org/blog/how-to-fix-linux-ntfs-read-only-access-issue-when-dual-booting-with-windows-10/)
+
+Microsoft의 [Windows를 실행하는 컴퓨터에서 최대 절전 모드를 해제하고 다시 설정하는 방법](https://learn.microsoft.com/ko-kr/troubleshoot/windows-client/setup-upgrade-and-drivers/disable-and-re-enable-hibernation)
 
 

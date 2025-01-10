@@ -2,7 +2,7 @@
 title: "[FPGA] 첫 프로젝트 - led 예제"
 date: 2025-01-09 12:40:00 +09:00
 categories: FPGA
-description: 
+description: Alchitry Au 보드를 사용해 led를 켜본다.
 pin: true
 use_math: true
 ---
@@ -11,7 +11,7 @@ use_math: true
 
 Architry Labs을 통해서 LED를 동작하는 프로젝트를 만들어본다.
 
-// 이미지
+<img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_project.png" alt="alchitry 프로젝트 생성" style="width: 80%">
 
 [create Project]를 클릭해 아래 설정으로 프로젝트를 생성한다.
 - Board : Alchitry Au v1
@@ -35,7 +35,7 @@ module alchitry_top (
 - 단일 비트 신호 : led는 8비트 (보드에 led가 총 8개이며 각 비트는 각 보드 led에 대응된다)
 - rst_n : 리셋 버튼 (기본적으로 1이며 버튼 누르면 0이 되는 active low)
 
-다음으로 always 블록은 계산을 수행하고 신호를 읽고 쓸 수 있다. FPGA 보드는 always에서 정의하는 동작을 복제하는 디지털 회로를 만든다.
+다음으로 always 블록은 계산을 수행하거나 신호를 읽고 쓸 수 있다. FPGA 보드는 always에서 정의하는 동작을 복제하는 디지털 회로를 만든다.
 
 ```
 always {
@@ -56,9 +56,6 @@ always {
 
 예를 들어, 위와 같이 정의된 always 블록의 동작은 프로그래밍 코드처럼 두 동작이 순차적으로 일어나는 것이 아니라 led가 항상 켜진 동작을 의미한다. 
 
-
-// 설명 추가
-
 ## 3. 예제
 
 이제 리셋 버튼을 첫 번째 LED에 연결하고, 버튼을 누르면 LED가 켜지도록 코드를 작성해보자. always 블록 내부에서 `led = 8h00`를 찾아서 아래와 같이 수정한다. 
@@ -69,16 +66,14 @@ always {
 led = c{7h00, rst};     // connect rst to the first LED
 ```
 
-8비트 배열의 LED를 단일 비트인 rst에 연결하기 위해서는 concatenation operator인 `c{x, y, z}를 사용한다. 
+8비트 배열의 LED를 단일 비트인 rst에 연결하기 위해서는 concatenation operator인 `c{x, y, ..., z}를 사용한다. 
 
 > Concatenation operator?
-> x, y, z가 하나의 배열을 형성
-> 
-// 추가 설명
+> 여러 비트를 연결하여 하나의 값으로 합치는 연산자 이다. 예를 들어. c{3b101, 2b11}은 5b10111을 의미한다. 따라서 위의 예제에서 c{7h00, rst}는 7개의 0과 rst값으로 연결된 8비트를 의미한다.
 
 #### 방법2
 
-혹은 LED의 배열를 부분적으로 나눠서 할당 시키는 방법으로도 동일한 역할의 코드를 작성할 수 있다.
+LED의 배열를 부분적으로 나눠서 할당 시키는 방법으로도 동일한 역할의 코드를 작성할 수 있다.
 
 ```
 led[7:1] = 7h0;    // LED off
@@ -86,22 +81,28 @@ led[0] = rst;      // connect rst to led[0]
 ```
 
 > 인덱싱?  
+> 배열의 인덱스는 0부터 시작하며, 배열의 슬라이싱을 표현하는 방법으로는 총 3가지가 있다. 첫 번째는 `배열명[상위비트:하위비트]`, 두 번째는 `배열명[시작비트-:개수]`, 마지막으로 `배열명[시작비트+:개수]`으로 표현할 수 있다. 아래는 모두 1부터 7까지 슬라이싱하는 예이다.  
 > 
 ```
 led[7:1] = 7b0;  // select bits 7-1
 led[7-:7] = 7b0; // select 7 bits starting from 7 and going down
 led[1+:7] = 7b0; // select 7 bits starting from 1 and going up
 ```  
-> 
 
 #### 방법3
+
+뒤의 명령문이 우선순위가 더 높은 always 블록의 특성을 이용한 것이다.
 
 ```
 led = 8b0;              // turn the LEDs off
 led[0] = rst;           // connect rst to led[0]
 ```
 
+led[0]=rst의 우선 순위가 더 높기 때문에 0번째 비트는 0이 아닌 rst 값으로 부여된다. 
+
 ### 3-1. 프로젝트 빌드
+
+<img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_build_success.png" alt="alchitry 빌드 성공" style="width: 80%">
 
 툴바에 망치 아이콘을 클릭하여 프로젝트를 빌드할 수 있다. Finished building project가 뜨면 빌드가 완료된 것이나 혹시 에러가 뜨게되면 오류의 원인을 찾아 수정해야 한다. 
 
@@ -112,11 +113,11 @@ led[0] = rst;           // connect rst to led[0]
 
 프로젝트 빌드가 완료되면 이제 보드를 컴퓨터에 연결한 후, 보드에 프로젝트를 로드해야 한다.
 
-// 이미지
-
 - 빈 화살표 : RAM에 쓰기 (전원을 끄면 자동 소실)
 - 실선 화살표 : 보드의 FLASH 메모리에 쓰기 (보드 재부팅 시 configuration 자동 로드)
 - 지우개 : FLASH 메모리 비우기
+
+<img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_load_success.png" alt="alchitry 로드 성공" style="width: 80%">
 
 로드 완료되면 DONE LED는 항상 켜져있고, Reset 버튼을 누르는 동안 첫번째 led의 불빛이 켜진다.
 
@@ -130,3 +131,5 @@ led[0] = rst;           // connect rst to led[0]
 ## 5. 최종 코드 파일
 
 ## 참고
+
+Alchitry의 [Your First FPGA Project](https://alchitry.com/tutorials/lucid_v1/your-first-fpga-project/) 

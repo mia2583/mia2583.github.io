@@ -119,9 +119,9 @@ led[0]=rst의 우선 순위가 더 높기 때문에 0번째 비트는 0이 아�
 
 <img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_load_success.png" alt="alchitry 로드 성공" style="width: 80%">
 
-로드 완료되면 DONE LED는 항상 켜져있고, Reset 버튼을 누르는 동안 첫번째 led의 불빛이 켜진다.
-
 ### 3-3 결과
+
+로드 완료되면 DONE LED는 항상 켜져있고, Reset 버튼을 누르는 동안 첫번째 led의 불빛이 켜진다.
 
 <img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_ex1.png" alt="alchitry ex1" style="width: 80%">
 

@@ -1,5 +1,5 @@
 ---
-title: "[FPGA] led 예제2"
+title: "[FPGA] Alchitry Au - led 예제2"
 date: 2025-01-12 16:00:00 +09:00
 categories: FPGA
 description: D 플리플롭을 사용해서 blink led를 만든다.

@@ -1,5 +1,5 @@
 ---
-title: "[FPGA] 첫 프로젝트 - led 예제"
+title: "[FPGA] Alchitry Au - led 예제"
 date: 2025-01-09 12:40:00 +09:00
 categories: FPGA
 description: Alchitry Au 보드를 사용해 led를 켜본다.
@@ -123,7 +123,7 @@ led[0]=rst의 우선 순위가 더 높기 때문에 0번째 비트는 0이 아�
 
 로드 완료되면 DONE LED는 항상 켜져있고, Reset 버튼을 누르는 동안 첫번째 led의 불빛이 켜진다.
 
-<img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_ex1.png" alt="alchitry ex1" style="width: 80%">
+<img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_ex1.JPG" alt="alchitry ex1" style="width: 80%">
 
 ## 4. 하드웨어의 특징
 

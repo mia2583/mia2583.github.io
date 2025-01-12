@@ -123,6 +123,7 @@ led[0]=rst의 우선 순위가 더 높기 때문에 0번째 비트는 0이 아�
 
 ### 3-3 결과
 
+<img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_ex1.png" alt="alchitry ex1" style="width: 80%">
 
 ## 4. 하드웨어의 특징
 

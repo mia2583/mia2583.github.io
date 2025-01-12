@@ -11,7 +11,7 @@ use_math: true
 
 ## 1. D-플립플롭 (D-flip-flop)
 
-<img src="{{ site.baseurl }}/assets/img/post/FPGA/d-flip-flop.JPG" alt="D 플립플롭" style="width: 80%">
+<img src="{{ site.baseurl }}/assets/img/post/FPGA/d-flip-flop.png alt="D 플립플롭" style="width: 80%">
 
 위의 이미지는 D-플립플롭의 기호이다. 기호에서 D는 입력(data)을, en은 , clk는 클록을, rst는 그리고 마지막으로 Q는 출력을 의미한다. 
 

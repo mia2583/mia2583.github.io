@@ -123,12 +123,15 @@ led[0]=rst의 우선 순위가 더 높기 때문에 0번째 비트는 0이 아�
 
 ### 3-3 결과
 
+<img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_ex1.png" alt="alchitry ex1" style="width: 80%">
 
 ## 4. 하드웨어의 특징
 
 위의 디자인의 경우, FPGA는 프로세서와 달리 버튼의 입력이 LED 출력에 직접 연결된다. 즉, 루프에 추가된 코드의 양과 상관없이 물리적 와이어에 의해서만 속도가 결정이 된다. 나머지 FPGA의 디자인 변경되더라도 LED와 버튼의 회로와는 독립적으로 동작하기 때문에 속도에 영향을 주지 않는다. 
 
 ## 5. 최종 코드 파일
+
+ex1 led 예제의 [alchitry_top.luc](https://github.com/mia2583/alchitry/blob/main/ex1_led/alchitry_top.luc)
 
 ## 참고
 

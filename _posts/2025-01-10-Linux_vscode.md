@@ -31,7 +31,7 @@ sudo dpkg -i [vscode_파일_다운_위치]
 그리고 pip는 설치되어 있지 않으므로 아래의 명령어로 설치 할 수 있다.
 
 ```bash
-sudo apt-get install pip3
+sudo apt install python3-pip
 ```
 
 > Linux 명령어?  

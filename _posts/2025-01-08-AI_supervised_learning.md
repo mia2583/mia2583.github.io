@@ -108,10 +108,11 @@ $$
 발산하는 경우가 생긴다. 따라서 적절한 값의 $\alpha$를 사용해야 한다.
 
 > Learning rate 스케쥴링 방법?  
-> 1. 스케쥴링  
+> 기본적으로 목적지에 도달할수록(일정 스텝마다) lr를 줄인다. 
+> 1. 기본 스케쥴링  
 > 매 s번째 epoch마다 $\alpha := \alpha \times d$ 로 업데이트   
 > 2. Exponential 스케쥴링  
-> 매 epoch 마다 $\alpha := \alpha_{0} \times \exp^{-\gamma t}\;(\gamma \text{는 decay_rate, t는 epoch})$ 로 업데이트    
+> 매 epoch 마다 $\alpha := \alpha_{0} \times \exp^{-\gamma t}\;(\gamma \text{는 decay rate, t는 epoch})$ 로 업데이트    
 > 3. Adaptive 스케쥴링(Annealing)  
 > $L_{val} \geq L_{best}$  일때에만 patient counter k 를 증가시키고  $k \geq p$ 이때에, $\alpha := \alpha \times d$로 업데이트한다. 즉, 발산하는 양상을 보일 때, $\alpha$값을 업데이트 한다.
 
@@ -145,11 +146,23 @@ $$
 
 경사 하강법들의 가장 큰 문제점은 local minima에 빠질 수 있다는 점이다. 목적함수는 기울기가 0이 되는 지점을 여러개 가질 수 있는데, 그 중 가장 낮은 부분을 global minima, 나머지를 local minima라고 한다. 경사 하강법은 현재 위치에서 보이는 가장 낮은 부분으로 이동하기에 초기값에 따라 local minima로 수렴할 수도 있다. 혹은 평평한 지대(plateau, 플래토)에도 빠질 수도 있다. 
 
-이를 해결하기 위해서 모멘텀 SGD(Momentum SGD)가 개발되었다. local minima에 갖히지 않게 어떠한 궤적을 따라 내려왔는지를 고려한다. 즉, 이동 방향을 현재 위치에서의 gradient와 지금까지의 gradient 
+이를 해결하기 위해서 모멘텀 SGD(Momentum SGD)가 개발되었다. 매 지점에서 가장 가파른 방향으로 이동하는 것이 아니라 어떠한 gradient로 어떠한 궤적을 따라 내려왔는지를 고려한다. 즉, 이동 방향을 현재 위치에서의 gradient와 지금까지의 gradient의 총합의 선형 결합으로 표현된다.
 
-// 계속
+$$
+v_t = \beta v_{t-1} + (1-\beta) \nabla L(\theta_{t-1})\;(0 \le \beta \ge 1)
+\theta = \theta_{t-1} - \alpha v_t
+$$
 
+- $\beta$가 더 작을수록 현재의 gradient에 더 의존
+
+관성(Momentum)을 가지기 때문에 이는 local minima에서 빠져나올 수 있도록 도와준다. 
+
+또한 gradient의 크기가 너무 크거나 작아지는 문제를 완화하기 위해 gradient의 값을 교정하는 방법으로는 RMS Prop가 있다. gradient의 각 위치에서의 크기 값에 따라 정규화함으로써 gradient값을 계산한다.
+
+모멘텀 SGD와 RMP Prop을 합친 기법을 ADAM이라고 하며, 실제 자주 사용된다. 
 
 ## 참고
+본 포스팅은 LG Aimers 강좌 중 연세대학교 노알버트 교수님의 '지도학습'에서 학습한 내용을 정리한다.
 
 i2 tutorials의 [What are Local Minima and Global Minima in Gradient Descent?](https://www.i2tutorials.com/what-are-local-minima-and-global-minima-in-gradient-descent/)
+

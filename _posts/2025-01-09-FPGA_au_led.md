@@ -9,7 +9,7 @@ use_math: true
 
 ## 1. 프로젝트 생성
 
-Architry Labs을 통해서 LED를 동작하는 프로젝트를 만들어본다.
+Alchitry Labs을 통해서 LED를 동작하는 프로젝트를 만들어본다.
 
 <img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_project.png" alt="alchitry 프로젝트 생성" style="width: 80%">
 

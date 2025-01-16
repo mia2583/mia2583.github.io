@@ -25,7 +25,7 @@ Alchitry lab에서 템플릿 'Base Projec-Minimun boilerplate project for ALchit
 
 <img src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_menu.png" alt="alchitry 메뉴" style="width: 70%">
 
-<img src="{{ site.baseurl }}/assets/img/post/FPGA/component_ibrary.png" alt="컴포넌트 추가" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/FPGA/component_library.png" alt="컴포넌트 추가" style="width: 70%">
 
 Alchitry lab의 툴바에서 블록 세개짜리 아이콘(add component)를 클릭한 후 [Component Library]-[Interface]에서 UART Rx와 UART Tx를 추가해준다.
 

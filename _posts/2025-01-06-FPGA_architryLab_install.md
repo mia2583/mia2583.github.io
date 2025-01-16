@@ -1,5 +1,5 @@
 ---
-title: "[FPGA] Architry Au를 위한 세팅"
+title: "[FPGA] Alchitry Au를 위한 세팅"
 date: 2025-01-06 18:40:00 +09:00
 categories: FPGA
 description: Alchitry Lab과 Vivado 설치하기

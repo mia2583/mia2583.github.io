@@ -1,7 +1,7 @@
 ---
 title: "[FPGA] Alchitry Au - 시리얼 통신 예제"
 date: 2025-01-16 15:20:00 +09:00
-categories: FGPA
+categories: FPGA
 description: 시리얼 통신으로 데이터를 송, 수신한다.
 pin: true
 use_math: true

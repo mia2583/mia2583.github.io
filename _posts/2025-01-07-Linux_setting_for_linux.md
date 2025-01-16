@@ -1,7 +1,7 @@
 ---
 title: "[Linux] 우분투 유용 기능 설정 - 한글, 디스크 공유"
 date: 2025-01-07 11:30:00 +09:00
-categories: 리눅스
+categories: Linux
 description: 한글 입력, 듀얼 부팅 내의 디스크 공유 방법에 대해 작성한다.
 pin: true
 use_math: true

@@ -1,7 +1,7 @@
 ---
 title: "[Linux] LG 그램에 Ubuntu 듀얼 부팅 설정하기"
 date: 2025-01-05 18:40:00 +09:00
-categories: 리눅스
+categories: Linux
 description: LG 그램에 Ubuntu를 설치하여 듀얼 부팅을 시도한다.
 pin: true
 use_math: true

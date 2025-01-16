@@ -76,13 +76,13 @@ $\zeta _i \ge 0$이면서 C값이 클수록 분류 직선의 범위를 넘어가
 소프트 마진 SVM을 hinge loss를 사용하면 아래와 같이 식을 더 간단하게 변경할 수 있다.
 
 $$
+\frac{1}{2} ||a||^2 + C \sum_{i=1}^n L(y_i, f(x_i)) \\
 L(y_i, f(x_i)) = max(0, 1-y_i(a^Tx_i + b))
-\frac{1}{2} ||a||^2 + C \sum_{i=1}^n L(y_i, f(x_i))
 $$
 
 > Hinge Loss?  
-> 0 과 1-\hat{y}y_i 중에 값이 더 큰 것을 사용하는 손실함수이다.  
-> 소프트 마진 SVM에서 $\zeta \ge 0$이고, $\zeta \ge 1-y_i(a^Tx_i+b)\;$ (= $y^{(i)}(ax^{(i)}+b) \ge 1 - \zeta$의 변형)이므로 $max(0, 1-y_i(a^Tx_i + b))$로 적을 수 있다. 
+> 0 과 $1-\hat{y}y_i$ 중에 값이 더 큰 것을 사용하는 손실함수이다.  
+> 소프트 마진 SVM에서 $\zeta \ge 0$이고, $\zeta \ge 1-y_i(a^Tx_i+b)\;(\leftarrow y^{(i)}(ax^{(i)}+b) \ge 1 - \zeta$의 변형) 이므로 $\;max(0, 1-y_i(a^Tx_i + b))$로 적을 수 있다. 
 
 <img src="{{ site.baseurl }}/assets/img/post/AI/classification_multidimension.png" alt="다차원 분류" style="width: 70%">
 
@@ -120,20 +120,71 @@ $$
 l(g_{a,b}(x^{(i)}), y^{(i)}) = log \frac{1}{\hat{y}(y^{(i)})}
 $$
 
-위의 식에서  // 여기도 추가
-
 Cross entropy loss는 KL Divergence 혹은 Relative Entropy라고 하는 식에서 유도되었다.
 
 > KL Divergence(Relative Entropy)?  
 > 두 개의 확률분포가 얼마나 멀리 떨어져 있는가(확률분포 사이의 거리)를 계산하는 함수이다.
 
+클래스가 1 일때와 -1일 때 모두 적용할 수 있는 로지스틱 회귀에서 손실함수는 아래와 같이 표현할 수 있다.
 
+$$
+L(\theta) = -\frac{1}{n} \sum_{i=1}^n 
+\begin{bmatrix}
 
+\frac{1+y^{(i)}}{2} log(g_\theta(X^{(i)})) + \frac{1-y^{(i)}}{2} log(1-g_\theta(X^{(i)}))
 
-// 계속
+\end{bmatrix}
+$$
 
+위의 식에서 $g_\theta(x) = 1+e^{-\theta^Tx}$를 대입하여 정리하면 아래와 같다.
 
-### 3. 데이터
+$$
+\begin{align*}
+&-log\;g_\theta(X^{(i)}) = log(1+e^{-\theta^Tx}) \\
+&-log\;(1-g_\theta(X^{(i)})) = log(1+e^{\theta^Tx}) \\
+&\therefore L(\theta) = \frac{1}{n} \sum_{i=1}^n log(1+e^{-y^{(i)}\theta^TX^{(i)}})
+\end{align*}
+$$
+
+## 2. 다중 분류(Multiclass Classification)
+
+클래스가 여러개인 경우에는 이진 분류의 일반화로 문제를 해결할 수 있다. 예를 들어 비행기, 자동차, 배를 구분하는 문제에서 각 이미지가 비행기인지 아닌지, 자동차인지 아닌지처럼 이진 분류를 여러번 반복해서 풀 수 있다. 
+
+하지만 소프트맥스 회귀(softmax regression)를 사용하면 로지스틱 회귀와 비슷한 형태로 문제를 풀 수 있다.
+
+### 2-1. 소프트맥스 회귀
+
+<img src="{{ site.baseurl }}/assets/img/post/AI/softmax.png" alt="소프트맥스 회귀" style="width: 70%">
+
+소프트맥스 회귀는 로지스틱 함수 대신에 소프트맥스 함수를 사용한다. 먼저 각 클래스를 잘 표현하는 선형함수를 찾고 이 값을 exponential 함수를 취하고 정규화해, 확률분포 형태로 만들어준다. 즉, 소프트맥스를 거친 확률들의 합은 1이되고, 모두 양수이다.
+
+이 모델 역시 cross entropy loss를 사용해 평가할 수 있다. 
+
+### 2-2. 한계점(Threshold, 기준점) 설정
+확률을 평가할 때, 예측에 대한 기준점을 잘 설정해야 한다. 예를 들어, 어떤 사람이 코로나가 걸렸을 확률이 30%, 안 걸렸을 확률이 70%일 때, 코로나에 대해 엄격히 하고 싶다면 30%의 확률인 사람도 코로나로 간주하고 추가적인 검사를 제안하는 것이 좋다.
+
+하지만 기준점을 너무 낮게 설정하면, 실제로 코로나가 걸리지 않은 사람도 코로나 양성으로 판단하는 False Positive 값이 커질 수 있다. 
+반대로 기준점을 너무 높게 설정한다면 코로나가 걸린 사람을 코로나 음성이라고 판단하는 False Negative가 발생한다. 
+
+이를 사용해, 양성이라 판단한 사람 중에 실제 양성이 있었던 비율을 Precision이라 하고, 실제 양성 중에 얼마나 양성으로 판단했는지에 대한 비율을 recall이라 한다.
+
+$$
+Precision = \frac{tp}{tp+fp} \\
+recall = \frac{tp}{tp+fn}
+$$
+
+이 둘은 서로 trade-off 관계를 가지기 때문에, 각자 상황에 모델에 threshold를 적용하면 된다. 만약 이 두 값이 적절히 조화로운 모델을 사용하고 싶다면 precision과 recall의 조화 평균인 F1-score를 사용할 수 있다. 
+
+또, 좋은 모델인지 평가하기 위해서 ROC Curve를 사용할 수도 있다.
+- True Positive Rate(TPR) = TP/(TP+FN)
+- False Positive Rate(FPR) = FP/(FP+TN)
+
+<img src="{{ site.baseurl }}/assets/img/post/AI/roc_curve.png" alt="ROC curve" style="width: 70%">
+
+완벽한 분류 모델의 경우에는 TPR을 1, FPR을 0으로 가져야한다. 하지만 이 둘 역시 trade-off 관계를 가진다. 
+하지만 이 둘이 trade-off를 가지는 곡선의 형태가 파란점에 가깝게 굽은 곡선일수록 즉, ROC Curve의 크기가 클수록 더 좋은 모델이다.
+
+## 3. 데이터
 
 일반적으로 학습 데이터를 학습, 검증 데이터로 분리해 학습을 한다.
 - 학습:검증을 8:2로 주로 설정한다.
@@ -156,8 +207,6 @@ validation error가 train error보다 살짝 크다면 적절히 학습이 된 �
 <img src="{{ site.baseurl }}/assets/img/post/AI/augmentation.JPG" alt="데이터 증강" style="width: 90%">
 
 강아지 사진을 이동, 회전, 뒤집어도 여전히 강아지 사진이다. 이처럼 데이터에 다양한 변환(회전, 이동, 확대, 축소, 뒤집기 등)을 적용해 새로운 데이터를 생성하는 방법이다. 하지만 숫자 2와 같이 변환으로 인해 데이터의 성질이 변화되는 경우가 있을 수도 있으니 주의해야 한다.
-
-
 
 ## 참고
 본 포스팅은 LG Aimers 강좌 중 연세대학교 노알버트 교수님의 '지도학습'에서 학습한 내용을 정리한다.

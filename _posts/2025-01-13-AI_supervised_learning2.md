@@ -1,6 +1,6 @@
 ---
 title: "[AI] 지도 학습2"
-date: 2025-01-13 :23:40 +09:00
+date: 2025-01-13 23:40:00 +09:00
 categories: 인공지능
 description: 지도학습 중 분류에 대해 자세히 알아본다.
 pin: true
@@ -41,11 +41,11 @@ $$
 
 하지만 퍼셉트론 알고리즘은 정답 함수가 있다고 가정할 때 사용될 수 있다. 만약 정답 함수가 없다면, 퍼셉트론 알고리즘은 멈추지 않고 무한히 동작할 것이다. 문제는 이것이 정답 함수가 없어서 알고리즘이 무한 반복되는 것인지, 정답 함수로 향해가는 중인지를 구분할 수 없다는 것이다. 
 
-### 1-1 SVM(Support Vector Machine)
+### 1-1. SVM(Support Vector Machine)
 
 그러면 위의 binary classification 문제를 조금 다듬어보자. 기존의 binary classification은 예측 $ax_i+ b$에 따라 클래스 $y_i$의 값이 결정되었다. 하지만 이 둘을 곱하게 되면 목적은 없고 제약조건만 있는 문제로 변환이 된다. 즉, $y_i(ax_i+b) > 0$을 풀면 된다. 이 식을 사용하면 정답의 존재 여부를 빠르게 판단할 수 있다. 하지만 이를 만족하는 $ax+b$는 매우 많다. 
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/decision_boundary.png" alt="분류" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/decision_boundary.png" alt="분류" style="width: 100%">
 
 위의 이미지에서 파란점과 빨간x를 분류하는 선에 대해서 초록색 보다는 검은 실선이 더 좋은 분류선으로 보인다. 이처럼 분류 직선이 데이터로부터 적절한 거리를 유지하는 경우에 일반화가 더 잘된 모델이라고 할 수 있다. 분류 직선과 데이터 점들 사이의 거리를 마진(Margin)이라고 하며, 아래 수식을 통해 계산할 수 있다.
 
@@ -53,13 +53,14 @@ $$
 d_i = \frac{|a^Tx_i + b|}{||a||} \;(x_i와\;직선 a^T+b =0\;사이의\;거리)
 $$
 
-그리고 모든 데이터에 대해 마진을 최대로하는 분류 직선을 구하는 알고리즘으로는 SVM(Support Vector Machine)이 있다. 위의 거리 식에서 계산을 단순히 하기 위해, $|a^Tx_i +b|$를 1로 고정하자.
+그리고 모든 데이터에 대해 마진을 최대로하는 분류 직선을 구하는 알고리즘으로는 SVM(Support Vector Machine)이 있다. 
+위의 거리 식에서 계산을 단순히 하기 위해, $|a^Tx_i +b|$를 1로 고정하자.
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/svm.png" alt="SVM" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/svm.png" alt="SVM" style="width: 90%">
 
-그러면 결국 모든 데이터에 대해 $y^{(i)}(ax^{(i)}+b) \ge 1$이면서, 마진의 크기 $\frac{||a||^2}{2}$를 최소로 하는 a, b의 값을 찾는 문제로 바꿀 수 있다.
+그러면 결국 모든 데이터에 대해 $y^{(i)}(ax^{(i)}+b) \ge 1$이면서, 마진의 크기 $\frac {\|\|a\|\|^2}{2}$를 최소로 하는 a, b의 값을 찾는 문제로 바꿀 수 있다.
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/svm_no_answer.png" alt="SVM - 정답이 없는 경우" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/svm_no_answer.png" alt="SVM - 정답이 없는 경우" style="width: 90%">
 
 하지만 만약 위 그림과 같이 두 클래스를 완벽히 분류하는 정답 함수가 없는 경우라면 어떻게 해야 할까?
 
@@ -71,7 +72,7 @@ $$
 
 $\zeta _i \ge 0$이면서 C값이 클수록 분류 직선의 범위를 넘어가는 것(이상치, outlier)에 대해 패널티를 크게 준다. 아래의 그림은 C값에 따라 동일한 데이터를 어떻게 분류하는지 보여준다.
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/svm_penalty.png" alt="C값에 따른 SVM" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/svm_penalty.png" alt="C값에 따른 SVM" style="width: 80%">
 
 소프트 마진 SVM을 hinge loss를 사용하면 아래와 같이 식을 더 간단하게 변경할 수 있다.
 
@@ -84,7 +85,7 @@ $$
 > 0 과 $1-\hat{y}y_i$ 중에 값이 더 큰 것을 사용하는 손실함수이다.  
 > 소프트 마진 SVM에서 $\zeta \ge 0$이고, $\zeta \ge 1-y_i(a^Tx_i+b)\;(\leftarrow y^{(i)}(ax^{(i)}+b) \ge 1 - \zeta$의 변형) 이므로 $\;max(0, 1-y_i(a^Tx_i + b))$로 적을 수 있다. 
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/classification_multidimension.png" alt="다차원 분류" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/classification_multidimension.png" alt="다차원 분류" style="width: 90%">
 
 직선이 아닌 더 복잡한 함수로 분류를 해야한다면 $x_i^2$, $x_i^3$과 같이 다차원으로 확장할 수 있을 것이다. 하지만 이 경우 역시, 회귀와 마찬가지로 오버피팅의 가능성을 고려해야한다.
 
@@ -102,7 +103,7 @@ $$
 
 로지스틱 함수는 입력 값을 0과 1사이의 값으로 변환해주는 함수로, 이를 이용해 이진 분류 문제를 해결하는 모델을 로지스틱 회귀(Logistic Regression)이라고 한다. 로지스틱 회귀는 주어진 입력을 0과 1 사이의 출력(입력값에 대한 확률)으로 변환한다. 즉 아래와 같이 각 점을 해석한다.
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/logistic_regression.png" alt="로지스틱 회귀" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/logistic_regression.png" alt="로지스틱 회귀" style="width: 90%">
 
 로지스틱 회귀의 모델을 아래와 같이 정의할 수 있다.
 
@@ -154,7 +155,7 @@ $$
 
 ### 2-1. 소프트맥스 회귀
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/softmax.png" alt="소프트맥스 회귀" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/softmax.png" alt="소프트맥스 회귀" style="width: 90%">
 
 소프트맥스 회귀는 로지스틱 함수 대신에 소프트맥스 함수를 사용한다. 먼저 각 클래스를 잘 표현하는 선형함수를 찾고 이 값을 exponential 함수를 취하고 정규화해, 확률분포 형태로 만들어준다. 즉, 소프트맥스를 거친 확률들의 합은 1이되고, 모두 양수이다.
 
@@ -179,7 +180,7 @@ $$
 - True Positive Rate(TPR) = TP/(TP+FN)
 - False Positive Rate(FPR) = FP/(FP+TN)
 
-<img src="{{ site.baseurl }}/assets/img/post/AI/roc_curve.png" alt="ROC curve" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/AI/roc_curve.png" alt="ROC curve" style="width: 100%">
 
 완벽한 분류 모델의 경우에는 TPR을 1, FPR을 0으로 가져야한다. 하지만 이 둘 역시 trade-off 관계를 가진다. 
 하지만 이 둘이 trade-off를 가지는 곡선의 형태가 파란점에 가깝게 굽은 곡선일수록 즉, ROC Curve의 크기가 클수록 더 좋은 모델이다.
@@ -212,4 +213,3 @@ validation error가 train error보다 살짝 크다면 적절히 학습이 된 �
 본 포스팅은 LG Aimers 강좌 중 연세대학교 노알버트 교수님의 '지도학습'에서 학습한 내용을 정리한다.
 
 바람돌이 님의 [SVM(Support Vector Machine) 분류 - 이론](https://m.blog.naver.com/winddori2002/221662413641)
-

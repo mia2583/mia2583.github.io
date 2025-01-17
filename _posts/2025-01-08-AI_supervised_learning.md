@@ -165,4 +165,3 @@ $$
 본 포스팅은 LG Aimers 강좌 중 연세대학교 노알버트 교수님의 '지도학습'에서 학습한 내용을 정리한다.
 
 i2 tutorials의 [What are Local Minima and Global Minima in Gradient Descent?](https://www.i2tutorials.com/what-are-local-minima-and-global-minima-in-gradient-descent/)
-

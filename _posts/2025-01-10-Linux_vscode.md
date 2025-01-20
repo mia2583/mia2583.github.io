@@ -121,6 +121,8 @@ CMake Error at Utilities/cmcurl/CMakeLists.txt:772 (message):
 cmake --version
 ```
 
+VScode에서 CMake를 사용하기 위해선 [extension]에서 'CMake'와 'CMake Tools'를 설치해준다. 
+
 ## 4. Git 설치
 
 git은 소프트웨어 개발에 사용되는 분산 버전 관리 시스템으로, 코드의 변경 내역을 기록하고 관리할 수 있다. 

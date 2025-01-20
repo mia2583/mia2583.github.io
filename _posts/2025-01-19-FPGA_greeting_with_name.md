@@ -15,6 +15,8 @@ use_math: true
 
 ## 1. RAM(Random Access Memory)
 
+RAM은 데이터를 임시로 저장하고 빠르고 읽고 쓸 수 있는 메모리 장치이다.
+
 <img src="{{ site.baseurl }}/assets/img/post/FPGA/simple_ram.png" alt="심플 램" style="width: 70%">
 
 먼저 이름을 보관할 RAM 컴포넌트를 생성해주자. 해당 컴포넌트는 lucid 언어가 아닌 verilog로 작성되어 있다. 

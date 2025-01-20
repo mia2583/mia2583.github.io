@@ -86,13 +86,13 @@ module uart_rx #(
  
     .rst(rst) {
         // 방법1
-        uart_rx rx (#BAUD(1000000), #CLK_FREQ(100000000)); // serial receiver
-        uart_tx tx (#BAUD(1000000), #CLK_FREQ(100000000)); // serial transmitter
+        uart_rx rx (#BAUD(1000000), #CLK_FREQ(100000000)) // serial receiver
+        uart_tx tx (#BAUD(1000000), #CLK_FREQ(100000000)) // serial transmitter
 
         // 혹은 방법2
         #BAUD(1000000), #CLK_FREQ(100000000) {
-          uart_rx rx;
-          uart_tx tx;
+          uart_rx rx
+          uart_tx tx
         }
     }
 }
@@ -111,14 +111,14 @@ module uart_rx #(
 always {
     ...
 
-    led = 8h00;
+    led = 8h00
  
-    rx.rx = usb_rx;         // connect rx input
-    usb_tx = tx.tx;         // connect tx output
+    rx.rx = usb_rx         // connect rx input
+    usb_tx = tx.tx         // connect tx output
  
-    tx.new_data = rx.new_data;
-    tx.data = rx.data;         
-    tx.block = 0;           // no flow control, do not block
+    tx.new_data = rx.new_data
+    tx.data = rx.data         
+    tx.block = 0           // no flow control, do not block
 }
 ```
 
@@ -136,7 +136,7 @@ always {
     ...
     .clk(clk){
         ...
-        dff data[8];
+        dff data[8]
 
         .rst(rst) { ... }
     }
@@ -146,9 +146,9 @@ always {
     ...
 
     if(rx.new_data)
-        data.d = rx.data;
+        data.d = rx.data
 
-    led = data.q;
+    led = data.q
 }
 ```
 
@@ -183,15 +183,15 @@ module hello_world_rom (
     output letter[8]   // ROM output
 ) {
  
-    const TEXT = "\r\n!dlroW olleH"; // text is reversed to make 'H' address [0]
+    const TEXT = "\r\n!dlroW olleH" // text is reversed to make 'H' address [0]
  
     always {
-      letter = TEXT[address]; // address indexes 8 bit blocks of TEXT
+      letter = TEXT[address] // address indexes 8 bit blocks of TEXT
     }
 }
 ```
 
-이때 TEXT는 2차원 배열의 형식이다. 1차원에는 각 캐릭터에 대한 인덱스를 저장하고, 2차원은 8비트로 실제 캐릭터 값을 저장한다. 이때, "H"가 주소 [0]에 저장되고, 이어서 "e"는 [1], "l"은 [2], ...순으로 저장된다. 실제 각 캐릭터는 TEXT의 2차원에 저장되므로 `letter = TEXT[address];`로 접근할 수 있다.
+이때 TEXT는 2차원 배열의 형식이다. 1차원에는 각 캐릭터에 대한 인덱스를 저장하고, 2차원은 8비트로 실제 캐릭터 값을 저장한다. 이때, "H"가 주소 [0]에 저장되고, 이어서 "e"는 [1], "l"은 [2], ...순으로 저장된다. 실제 각 캐릭터는 TEXT의 2차원에 저장되므로 `letter = TEXT[address]`로 접근할 수 있다.
 
 ### 3-2. FSM(Finite State Machine)
 
@@ -210,37 +210,37 @@ module greeter (
     input tx_busy      // TX is busy flag
 ) {
 
-    const NUM_LETTERS = 14;
+    const NUM_LETTERS = 14
 
-    enum States {IDLE, GREET};      // define state
+    enum States {IDLE, GREET}      // define state
 
     .clk(clk) {
         .rst(rst) {
-            dff state[$width(States)];     // finite state machine
+            dff state[$width(States)]     // finite state machine
         }
-        dff count[$clog2(NUM_LETTERS)]; // min bits to store NUM_LETTERS - 1
+        dff count[$clog2(NUM_LETTERS)] // min bits to store NUM_LETTERS - 1
     }
 
-    hello_world_rom rom;
+    hello_world_rom rom
 
     always {
-        rom.address = count.q;
-        tx_data = rom.letter;       // which data to send (get from ROM)
+        rom.address = count.q
+        tx_data = rom.letter       // which data to send (get from ROM)
  
-        new_tx = 0; // default to 0
+        new_tx = 0 // default to 0
  
         case (state.q) {
             States.IDLE:            // if IDLE and receive "h", change state to GREET
-            count.d = 0;
+            count.d = 0
             if (new_rx && rx_data == "h")
-                state.d = States.GREET;
+                state.d = States.GREET
  
             States.GREET:           // if GREET, send "Hello World". Once done, change state to IDLE
                 if (!tx_busy) {
-                    count.d = count.q + 1;
-                    new_tx = 1;
+                    count.d = count.q + 1
+                    new_tx = 1
                     if (count.q == NUM_LETTERS - 1)
-                        state.d = States.IDLE;
+                        state.d = States.IDLE
                 }
         }
     }
@@ -257,23 +257,23 @@ ROM에 저장된 데이터를 주소 0에서부터 NUM_LETTERS까지 순서대�
 .clk(clk) {
     .rst(rst) {
         ...
-        greeter greeter; // instance of our greeter
+        greeter greeter // instance of our greeter
     }
 }
 
 always {
     ...
-    rx.rx = usb_rx;         // connect rx input
-    usb_tx = tx.tx;         // connect tx output
+    rx.rx = usb_rx         // connect rx input
+    usb_tx = tx.tx         // connect tx output
  
-    greeter.new_rx = rx.new_data;
-    greeter.rx_data = rx.data;
-    tx.new_data = greeter.new_tx;
-    tx.data = greeter.tx_data;
-    greeter.tx_busy = tx.busy;
-    tx.block = 0;
+    greeter.new_rx = rx.new_data
+    greeter.rx_data = rx.data
+    tx.new_data = greeter.new_tx
+    tx.data = greeter.tx_data
+    greeter.tx_busy = tx.busy
+    tx.block = 0
  
-    led = 8h00;             // turn LEDs off
+    led = 8h00             // turn LEDs off
 }
 ```
 

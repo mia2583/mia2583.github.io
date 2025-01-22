@@ -1,8 +1,8 @@
 --
-title: "[ROS2] ROS2 시작하기(설치와 실습)"
+title: "[ROS2] ROS2 시작하기 (기본 용어와 설치)"
 date: 2025-01-17 :23:40 +09:00
-categories: ROS2
-description: ROS2에 대해 학습하고 설치부터 간단한 실습까지 진행해본다.
+categories: SLAM
+description: ROS2에 대해 학습하고 설치를 진행해본다.
 pin: true
 use_math: true
 ---
@@ -73,10 +73,15 @@ ROS2는 미들웨어로써, DDS와 로봇 어플리케이션 사이의 통신을
 
 ### 2-6. 런치 파일(Launch File)
 
+런치 파일은 여러 노드를 한번에 실행할 수 있도록 설정해주는 XML 형식의 파일이다. 이를 통해 로봇 시스템의 구성과 실행을 효율적으로 관리할 수 있다. 
 
+### 2-7. 파라미터(Parameter)
 
-### 2-7. 파라미터 서버(Prameter Server)
+파라미터는 노드에서 사용될 수 있는 설정값이다. 예를 들어, 로봇의 이동을 담당하는 노드에서는 이동 속도, 회전 속도, 이동 방향 등을 파라미터로 가질 수 있다. 
 
+### 2-8. 파라미터 서버(Prameter Server)
+
+파라미터 서버는 노드 간에 공유되는 설정 값(파라미터)를 저장하고 관리한다. 런치파일을 통해 파라미터 서버를 초기화하거나 값을 설정할 수 있다. 
 
 ## 3. ROS2 Humble 설치
 
@@ -101,3 +106,6 @@ ROS2는 미들웨어로써, DDS와 로봇 어플리케이션 사이의 통신을
 > - `Ctrl+Shift+e` : 오른쪽에 새로운 터미널 열기  
 > - `Ctrl+Shift+o` : 아래에 새로운 터미널 열기
 
+## 참고
+
+ROS2 Documentation의 [Basic Concepts](https://docs.ros.org/en/humble/Concepts/Basic.html)

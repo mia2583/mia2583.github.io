@@ -1,6 +1,6 @@
---
+---
 title: "[ROS2] ROS2 시작하기 (기본 용어와 설치)"
-date: 2025-01-17 :23:40 +09:00
+date: 2025-01-17 23:40:00 +09:00
 categories: SLAM
 description: ROS2에 대해 학습하고 설치를 진행해본다.
 pin: true
@@ -53,7 +53,7 @@ ROS2는 미들웨어로써, DDS와 로봇 어플리케이션 사이의 통신을
 
 토픽은 비동기식 데이터 전송을 위한 통신 채널이다. 어떠한 노드가 특정 토픽(채널)으로 메세지(데이터)를 publish하면 다른 노드가 특정 토픽(채널)을 subcribe하여 메세지를 읽을 수 있다.
 
-<img src="{{ site.baseurl }}/assets/img/post/ROS2/topic.png" alt="토픽" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/topic.png" alt="토픽" style="width: 80%">
 
 메세지를 publish 하는 노드를 publisher, subscribe하는 노드를 subscriber라고 하며, 하나의 토픽에 대해 여러 개의 publisher와 subscriber가 존재할 수 있다. 또, 하나의 노드는 여러 토픽에 대해 publisher이자, 다른 여러 토픽에 대해 subscriber 역할을 할 수 있다. 
 
@@ -61,13 +61,13 @@ ROS2는 미들웨어로써, DDS와 로봇 어플리케이션 사이의 통신을
 
 ### 2-4. 서비스(Service)
 
-<img src="{{ site.baseurl }}/assets/img/post/ROS2/service.png" alt="서비스" style="width: 70%"
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/service.png" alt="서비스" style="width: 80%">
 
 서비스는 동기식 요청-응답 방식의 통신으로, 클라이언트는 서비스를 요청하고 서버는 요청된 서비스에 대한 응답을 반환한다. 
 
 ### 2-5. 액션(Action)
 
-<img src="{{ site.baseurl }}/assets/img/post/ROS2/action.png" alt="액션" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/action.png" alt="액션" style="width: 80%">
 
 액션은 서비스와 유사하지만 작업 중간 진행사항에 대한 피드백을 받을 수 있어서 시간이 오래 걸리는 작업을 처리할 때 사용된다. 또한 액션은 서비스와 달리 작업을 중간에 취소할 수 있다. 
 
@@ -92,7 +92,7 @@ ROS2는 미들웨어로써, DDS와 로봇 어플리케이션 사이의 통신을
 > 새로운 터미널을 열 때마다 추가작업 없이 ros2의 명령어와 기능을 사용할 수 있도록 ros2를 소싱해주어야 한다. 우분투의 경우에는 `vi .bashrc`하여 해당 파일 맨 끝에 `source /opt/ros/humble/setup.bash`를 추가 작성해준다.  
 > 이후 새 터미널을 열면 ros2 사용이 가능하다.
 
-<img src="{{ site.baseurl }}/assets/img/post/ROS2/ros2_help.png" alt="ros2 help" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/ros2_help.png" alt="ros2 help" style="width: 80%">
 
 만약 설치가 모두 완료되었다면 터미널에 `ros2 --help`를 입력했을 때, 위의 이미지처럼 ros2에서 사용가능한 명령어들이 출력되어야 한다. 
 

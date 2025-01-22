@@ -1,8 +1,8 @@
---
-title: "[ROS2] ROS2 실습 - Publisher"
-date: 2025-01-17 :23:40 +09:00
+---
+title: "[ROS2] ROS2 실습 - Publisher, Subscriber"
+date: 2025-01-21 20:23:00 +09:00
 categories: SLAM
-description: ROS2로 간단한 publisher를 작성해본다.
+description: ROS2로 간단한 publisher와 subscriber를 작성해본다.
 pin: true
 use_math: true
 ---
@@ -40,7 +40,7 @@ cd ../
 colcon build
 ```
 
-<img src="{{ site.baseurl }}/assets/img/post/ROS2/build_success.png" alt="빌드 성공" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/build_success.png" alt="빌드 성공" style="width: 100%">
 
 > 재빌드 시 에러 발생?  
 > `/usr/local/bin/cmake: error while loading shared libraries: libssl.so.1.1` 에러가 발생한다면 이는 OpenSSL 1.1이 설치되어 있지 않아서 발생하는 에러이다. 설치 후 재시도하자.  
@@ -55,15 +55,15 @@ cd ros2_ws/install
 ros2 pkg list   # 해당 터미널에 한해서만 패키지가 활성화되기 때문에 다른 터미널에서 시도하면 패키지가 보이지 않는다.
 ```
 
-<img src="{{ site.baseurl }}/assets/img/post/ROS2/pkg_list.png" alt="패키지 리스트" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/pkg_list.png" alt="패키지 리스트" style="width: 90%">
 
 이로써, 설치된 ros2와 개발에 사용된 모든 패키지가 포함된 오버레이 워크스페이스가 된다. 즉, 작업 공간의 코드와 패키지들이 ros2에서 인식된다.
 
-## 2. publisher
+## 2. Publisher
 
 이제 생성된 패키지 내에 새로운 노드를 생성해보자. `ros2_ws/src/cpp_pubsub/src/` 안에 새로운 파일 `simple_publisher.cpp`를 생성해준다. 매 초마다 메세지를 publish하는 publisher를 만들고자 한다.
 
-### 2-1. publisher 클래스 생성하기
+### 2-1. Publisher 클래스 생성하기
 
 가장 먼저 C++에서의 ROS2 라이브러리를 포함시켜 ROS2 시스템을 사용할 수 있도록 한다.
 
@@ -102,7 +102,8 @@ class SimplePublisher : public rclcpp::Node {
 public:
     SimplePublisher() : Node("simple_publisher"), counter_(0) {
         pub_ = create_publisher<std_msgs::msg::String>("chatter", 10);
-        timer_ = create_wall_timer(1s, std::bind(&SimplePublisher::timerCallback, this));     // 1초당 함수 timeCallBack()을 호출하는 타이머 생성 
+        // 1초당 함수 timeCallBack()을 호출하는 타이머 생성 
+        timer_ = create_wall_timer(1s, std::bind(&SimplePublisher::timerCallback, this));     
 
         RCLCPP_INFO(get_logger(), "publishing at 1 Hz");
     }
@@ -167,7 +168,7 @@ install(TARGETS
 )
 ```
 
-### 2-3. package.xml 작성하기
+### 2-4. package.xml 작성하기
 
 `package.xml` 파일은 패키지의 의존성 관리를 담당한다. 해당 파일 안에 사용한 패키지들을 정의해준다.
 
@@ -177,7 +178,7 @@ install(TARGETS
 <depend>std_msgs</depend>
 ```
 
-## 3. 실행 결과
+### 2-5. 실행 결과
 
 ```bash
 cd ros2_ws
@@ -188,9 +189,9 @@ source ros2_ws/install/setup.bash
 ros2 run cpp_pubsub simple_publisher
 ```
 
-<img src="{{ site.baseurl }}/assets/img/post/ROS2/simple_publisher.png" alt="퍼블리셔" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/simple_publisher.png" alt="퍼블리셔" style="width: 100%">
 
-pushlish되고 있는 메세지를 확인하고 싶다면 아래 명령어를 통해 확인할 수 있다. 
+publish 되고 있는 메세지를 확인하고 싶다면 아래 명령어를 통해 확인할 수 있다. 
 
 ```bash
 # ros2 run ...을 실행중인 상태에서 새 터미널을 열고 아래 명령어들 입력
@@ -198,7 +199,103 @@ ros2 topic list     # 현재 publish 중인 토픽 확인하기
 ros2 topic echo /chatter    # 토픽의 메세지 읽기
 ```
 
-<img src="{{ site.baseurl }}/assets/img/post/ROS2/echo_topic.png" alt="토픽 메세지 읽기" style="width: 70%">
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/echo_topic.png" alt="토픽 메세지 읽기" style="width: 90%">
+
+publish 되고 있는 토픽에 대한 정보를 알고 싶다면 아래 명령어를 입력한다.
+
+```bash
+ros2 topic info /chatter --verbose   # 토픽에 대한 전체 개요 확인
+ros2 topic hz /chatter  # 해당 토픽이 몇 hz로 메세지를 publish하는지 확인
+```
+
+### 3. Subscriber
+
+터미널로 메세지를 읽는게 아닌 특정 토픽을 subscribe하는 subscriber 노드를 생성해보자. 먼저 노드를 생성하기위해 ros2 기본 라이브러인 `rclcpp`와 메세지 타입인 `std_msgs` 패키지를 포함한다.
+
+```cpp
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
+```
+
+### 3-1. Subscriber 클래스 생성하기
+
+이제 토픽 `chatter`로부터 메세지 타입이 `std_msg::msg::String`인 메세지를 읽어서 이를 출력해주는 subscriber 클래스를 정의해준다.
+
+```cpp
+using std::placeholders::_1;
+
+class SimpleSubscriber : public rclcpp::Node {    // subscriber 클래스
+public:
+    SimpleSubscriber() : Node("simple_subscriber") {
+        sub_ = create_subscription<std_msgs::msg::String>("chatter", 10, std::bind(&SimpleSubscriber::msgCallback, this, _1));
+    }
+
+private:
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub_;
+
+    void msgCallback(const std_msgs::msg::String &msg) const {    // 읽은 메세지 출력하기
+        RCLCPP_INFO_STREAM(get_logger(), "I heard: " << msg.data.c_str());
+    }
+};
+```
+
+`std::placeholder`은 `std::bind()`와 함께 사용되며, 매개변수의 자리 표시자를 의미한다. 
+이는 `create_subscrition`이 메세지를 받으면 이를 `msgCallback` 함수의 첫 번째 인자(`_1`)인 `const std_msgs::msg::String`으로 전달된다.
+
+### 3-2. main 함수 생성
+
+publisher와 마찬가지로 subscriber 노드를 생성 후, 노드가 종료될 때까지 계속 실행한다.
+
+```cpp
+int main(int argc, char* argv[]) {
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<SimpleSubscriber>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+### 3-3. CMakeLists.txt 작성하기
+
+publisher를 빌드하기 위해서 사용한 CMakeLists.txt에 subscriber 노드에 대해서도 빌드를 할 수 있게 아래 코드를 추가해준다.
+
+```
+add_executable(simple_subscriber src/simple_subscriber.cpp)
+ament_target_dependencies(simple_subscriber rclcpp std_msgs)
+
+install(TARGETS
+  simple_publisher
+  simple_subscriber
+  DESTINATION lib/${PROJECT_NAME}
+)
+```
+
+### 3-5. 실행 결과
+
+```bash
+cd ros2_ws
+colcon build
+# 새 터미널 열기
+source ros2_ws/install/setup.bash
+# ros2 run [패키지명] [실행파일명]
+ros2 run cpp_pubsub simple_subscriber
+# 새 터미널 열기
+source ros2_ws/install/setup.bash
+ros2 run cpp_pubsub simple_publisher
+```
+
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/pubsub.png" alt="퍼블리셔와 서브스크라이버" style="width: 90%">
+
+이때, publisher 노드와 subscriber 노드가 서로 다른 언어로 작성되었어도 publish한 메세지를 subscribe 가능하다. 
+그리고 만약 publisher가 아니라 터미널로 하나의 메세지를 publish하고 싶다면 아래의 명령어를 입력한다.
+
+```bash
+# ros2 topic pub [토픽] [메세지_타입] [메세지_형식+메세지] -> tab tab으로 힌트를 얻을 수 있음
+ros2 topic pub /chatter std_msgs/msg/String "data: 'Hello'"
+```
+
+<img src="{{ site.baseurl }}/assets/img/post/ROS2/subscriber.png" alt="토픽 서브스크라이브" style="width: 90%">
 
 publish되고 있는 토픽에 대한 정보를 알고 싶다면 아래 명령어를 입력한다.
 
@@ -208,6 +305,8 @@ ros2 topic hz /chatter  # 해당 토픽이 몇 hz로 메세지를 publish하는�
 ```
 
 ## 4. 전체 코드
+
+[cpp_pubsub 패키지](https://github.com/mia2583/Robotics/tree/main/ros2_ws/src/cpp_pubsub)
 
 ## 참고
 

@@ -145,7 +145,7 @@ always {
 
 rst가 low(0)일 때, 카운터가 $0~2^{25}-1$의 값을 반복하며 LED가 깜빡인다. 반면에 rst가 high(1)일 때, 카운터의 출력값이 항상 0으로 초기화되므로 LED는 꺼짐(0)을 유지한다.
 
-<video>
+<video controls>
     <source src="{{ site.baseurl }}/assets/img/post/FPGA/alchitry_ex2.mp4" type="video/mp4">Your browser does not support the video tag
 </video>
 

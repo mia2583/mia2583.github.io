@@ -94,7 +94,7 @@ lsb_release -a          // 현재 버전 확인
 do-release-upgrade -c   // 업그레이드 가능한 버전 조회
 ```
 
-<img src="{{ site.baseurl }}/assets/img/post/Linux/ubuntu_upgrade.JPG" alt="우분투 업그레이드" style="width: 80%">
+<img src="{{ site.baseurl }}/assets/img/post/Linux/ubuntu_upgrade.png" alt="우분투 업그레이드" style="width: 80%">
 
 최신의 버전으로 바로 업그레이드되는 것이 아니라 한 단계씩 업그레이드가 되는데 그 이유는 각 버전의 의존성 충돌을 최소화하여 안정적으로 업그레이드하기 위함이다. 
 

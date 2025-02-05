@@ -85,6 +85,31 @@ Window는 기본적으로 빠른 시작을 사용해서 컴퓨터를 부팅한�
 
 이제 윈도우를 종료하고 우분투를 부팅하면 정상적으로 파일 read, write가 가능하다. 
 
+## 3. 우분투 버전 업그레이드
+
+우분투 현재 버전을 확인하고 앞으로 업그레이드 가능한 버전을 조회하기 위해선 아래 명령어들을 터미널에 입력한다.
+
+```bash
+lsb_release -a          // 현재 버전 확인
+do-release-upgrade -c   // 업그레이드 가능한 버전 조회
+```
+
+<img src="{{ site.baseurl }}/assets/img/post/Linux/ubuntu_upgrade.png" alt="우분투 업그레이드" style="width: 80%">
+
+최신의 버전으로 바로 업그레이드되는 것이 아니라 한 단계씩 업그레이드가 되는데 그 이유는 각 버전의 의존성 충돌을 최소화하여 안정적으로 업그레이드하기 위함이다. 
+
+그러면 이제 아래 명령어를 통해 업그레이드를 실행한다.
+
+```bash
+sudo do-release-upgrade
+```
+
+업그레이드가 완료된 후 재부팅을 진행한다. 재부팅 후 터미널을 열어 새로 업그레이드된 우분투의 버전을 확인한다.
+
+```
+lsb_release -a
+```
+
 ## 참고
 
 세종정조님의 [Ubuntu 24.04 한글 입력기 설정 (한영 변환 설정)](https://andrewpage.tistory.com/390)
@@ -94,5 +119,7 @@ Window는 기본적으로 빠른 시작을 사용해서 컴퓨터를 부팅한�
 Anton Silvers님의 [How to fix Linux NTFS read only access issue when dual-booting with Windows 10](https://www.microfusion.org/blog/how-to-fix-linux-ntfs-read-only-access-issue-when-dual-booting-with-windows-10/)
 
 Microsoft의 [Windows를 실행하는 컴퓨터에서 최대 절전 모드를 해제하고 다시 설정하는 방법](https://learn.microsoft.com/ko-kr/troubleshoot/windows-client/setup-upgrade-and-drivers/disable-and-re-enable-hibernation)
+
+[Spiral Moon님의 Ubuntu OS 버전 업그레이드 방법](https://blog.spiralmoon.dev/entry/Ubuntu-Ubuntu-OS-버전-업그레이드-방법)
 
 

@@ -174,4 +174,73 @@ $$
 
 ### 3-3. Convex 최적화
 
+convex 최적화 문제를 다루기 위해선 우선 convex 집합과 convex 함수 개념에 대해 이해할 필요가 있다. 
 
+convex 집합은 집합 내의 두 점을 이은 선분 위의 모든 점이 해당 집합 내에 모두 포함되는 집합을 의미한다. 
+
+즉, 집합 C의 어떠한 두 점 $x1$, $x2$을 잇는 $\theta x1 + (1-\theta) x2$의 모든 점이 집합 C에 포함된다면 집합 C를 convex set이라고 한다. 
+
+<img src="{{ site.baseurl }}/assets/img/post/AI/convex_set.png" alt="convex 집합" style="width: 80%">
+
+위의 그림에서 제일 왼쪽 그림은 convex set이고 나머지 두 그림은 convex set이 아니다.
+
+convex 함수(볼록 함수)는 그래프가 아래쪽으로 복록한 형태를 갖는 함수를 말한다
+
+함수 $f(x)$가 convex 함수가 되기 위해서는 함수 내의 두 점을 이은 직선이 함수 그래프 위에 존재해야 한다.
+
+$$
+f(\theta x1 + (1-\theta) x2) \le \theta f(x1) + (1-\theta) f(x2)
+$$
+
+<img src="{{ site.baseurl }}/assets/img/post/AI/convex_function.png" alt="convex 함수" style="width: 80%">
+
+convex 함수인지 확인하기 위해서는 두 가지 방법이 있다. 
+
+- First-order condition
+
+    f가 미분 가능 할 때, 접선보다 함수가 위에 있다. 
+
+    $$ f(y) - f(x) >= \nabla f(x)^T(y-x) $$
+
+    만약 $\nabla f(X) = 0$ 즉, $f(y) \ge f(x)$인 지점이 최솟값이다.
+
+- Second-order condition
+
+    이차 도함수(해시안 행렬)가 양수이거나 양의 준정부호(Positive Semi-definite)이어야 한다.
+
+convex 함수는 지역 최적해가 글로벌 최적 해와 동일하며, convex 최적화는 목적함수와 제약 조건이 모두 convex 함수로 구성될 때 최적화를 구하는 문제이다. 
+
+이전에 constrained 최적화에서는 $d^* \le p^*$인 약한 이중성이 성립되었다. 하지만 convex 최적화에서는 $d^* = p^*$ (strong duality)를 만족하기에 풀기 쉽다.
+
+### 3-4. KKT (Karush-Kuhn-Tucker) 조건
+
+KKT 조건은 최적화 문제에서 유효한 해를 찾기 위한 필요 조건을 제공한다. 
+
+특히 convex 최적화에서는 KKT 조건이 필요충분 조건이 된다.
+
+먼저 라그랑주 함수를 아래와 같이 정의하고 라그랑주 함수에 대해 기울기가 0인 지점을 찾는다.
+
+$$
+\begin{align*}
+&L(x, \lambda, v) = f(x) + \sum_{i=1}^m \lambda_i g_i(x) + \sum_{j=1}^p v_j h_j(x) \\
+
+&\nabla_x L(x, \lambda, v) = 0
+\end{align*}
+$$
+
+기울기가 0인 지점의 x 값 중 아래 조건을 만족하는 경우에 최적해가 된다.
+
+1. 기존의 제약 조건 만족
+
+    $ g_i(x) \le 0 \\ h_j(x) = 0 $
+
+2. 듀얼 변수 조건 만족 - 라그랑주 승수가 양수여야 한다.
+
+    $ \lambda_i \ge 0 $
+
+3. 상호 보완성 조건 만족 - 활성화된 제약에서 라그랑주 승수가 0이 아니고, 비활성된 제약에서는 라그랑주 승수가 0이어야 한다.
+
+    $ \lambda_i g_i(x) = 0 $
+
+## 참고
+본 포스팅은 LG Aimers 강좌 중 카이스트 신진우 교수님의 'Mathematics for ML'에서 학습한 내용을 정리한다.
